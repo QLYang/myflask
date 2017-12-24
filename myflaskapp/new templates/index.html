@@ -1,0 +1,12 @@
+{%extends "base.html" %} 
+{%import "bootstrap/wtf.html" as wtf%}
+
+{%block blogtitle%}
+{%if current_user.is_authenticated%}
+    您好，{{ current_user.username }}
+{% else %}
+    您好，游客
+{% endif %}!
+{%endblock blogtitle%}
+
+{%block blogdescription%}欢迎访问yangql的博客{%endblock blogdescription%}

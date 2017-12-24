@@ -1,0 +1,16 @@
+{%extends "base.html" %}
+{%import "bootstrap/wtf.html" as wtf%}
+{%block blogtitle%}
+用户资料编辑
+{%endblock blogtitle%}
+{%block blogdescription%}
+编辑您的账户
+{%endblock blogdescription%}
+
+{%block posts%}
+<div class="blog-post"> 
+    {{ wtf.quick_form(form) }} 
+    <br>
+    <br>
+</div> 
+{%endblock posts%}

@@ -1,0 +1,50 @@
+{%extends "base.html" %} 
+{%import "bootstrap/wtf.html" as wtf%}
+{%import "_macros.html" as macros %} 
+
+
+{%block blogtitle%}
+{%if current_user.is_authenticated%}
+    您好，{{ current_user.username }}
+{% else %}
+    您好，游客
+{% endif %}!
+{%endblock blogtitle%}
+
+{%block blogdescription%}{%endblock blogdescription%}
+
+{%block posts%}
+<div>
+	{%if current_user.can(Permission.WRITE_ARTICLE)%}
+	{{wtf.quick_form(form)}}
+	{%endif%}
+</div>
+<h2>文章列表</h2>
+<br>
+<ul class="nav nav-pill">
+<li class="btn "><a  href="{{url_for('.show_all')}}">全部文章  </a></li>
+
+{%if current_user.is_authennticated%}
+<li class="btn"><a  href="{{url_for('.show_followed')}}">关注的文章</a></li>
+{%endif%}
+
+{%if not show_followed%}
+	<div id="showed_all" >
+{%else%}
+	<div id="showed_followed" >
+{%endif%}
+
+{%include '_posts.html'%}<!--用于渲染博客的局部模板-->
+	</div>
+</ul>
+{%endblock posts%}
+
+{%block pagination%}
+<nav class="blog-pagination">
+{{ macros.pagination_widget(pagination, '.index') }}       
+</nav>
+{%endblock pagination%}
+{%block scripts%}
+{{super()}}
+{{ pagedown.include_pagedown() }} 
+{%endblock%}

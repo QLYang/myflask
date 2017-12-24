@@ -1,0 +1,20 @@
+{%extends "base.html"%}
+{%block blogtitle%}
+您好 {{ user.username }}, 
+{%endblock blogtitle%}
+{%block blogdescription%}
+欢迎拜访杨青霖的博客
+{%endblock blogdescription%}
+{%block posts%}
+点击下面的链接确认账户
+<br></br>
+<a href="{{ url_for('auth.confirm', token=token, _external=True) }}">点击此处</a>
+<br></br>
+By
+<br></br>
+杨青霖
+<br></br>
+<br></br>
+（请勿回复此邮件！）
+<br></br>
+{%endblock posts%}

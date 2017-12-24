@@ -1,0 +1,44 @@
+<!--分页导航-->
+{%macro pagination_widget(pagination, endpoint,user) %} 
+<!--endpoint是端点名称-->
+    <!--显示“上一页”-->
+       {%if pagination.has_prev %}
+       <a class="btn btn-outline-primary" href="{{ url_for(endpoint, username=user.username,page = pagination.page - 1,**kwargs)}}">
+       {%else%}
+       <a class="btn btn-outline-secondary disabled" href="#">
+       {%endif %}
+            &laquo; 
+        </a> 
+
+    
+    {%for p in pagination.iter_pages() %} 
+        {%if p %} 
+            <!--高亮显示当前页-->
+            {%if p == pagination.page %} 
+            <a class="btn btn-outline-primary active"  
+            href="{{ url_for(endpoint, username=user.username,page = p, **kwargs) }}">{{ p }}
+            </a> 
+            
+            {%else %} 
+            <!--其他页普通渲染-->
+            <a btn btn-outline-primary 
+            href="{{ url_for(endpoint,username=user.username, page = p, **kwargs) }}">{{ p }}
+            </a> 
+            {%endif %} 
+
+        <!--若为None,显示省略号-->
+        {%else %} 
+        <a class="btn btn-outline-secondary disabled" href="#">&hellip;</a>
+        {%endif %} 
+    {%endfor %}
+    
+    <!--显示“下一页”-->
+        {%if pagination.has_next %}
+        <a class="btn btn-outline-primary" href="       
+            {{ url_for(endpoint, username=user.username,page = pagination.page + 1, **kwargs) }} ">
+        {%else %}
+        <a class="btn btn-outline-secondary disabled" href="#">
+        {%endif %}
+                &raquo; 
+        </a> 
+{%endmacro %}

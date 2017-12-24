@@ -1,0 +1,96 @@
+{%extends "bootstrap/base.html"%}
+
+{% block title %}yangql的博客{% endblock title %}
+{%block styles%}
+{{super()}}
+<!-- Custom styles for this template -->
+  <link href="{{url_for('static',filename='css/blog.css')}}" rel="stylesheet" type="text/css">
+  <link href="{{url_for('static',filename='css/navbar.css')}}" rel="stylesheet" type="text/css">
+{%endblock%}
+
+{% block navbar %}
+<nav class="navbar navbar-default" role="navigation">        
+  <div class="container">
+    <ul class="nav navbar-nav">
+        <li class="navbar-header">
+            <a class="navbar-brand" href="{{url_for('.index')}}">首页</a>
+        </li>
+
+        <li>
+				{%if current_user.can(Permission.MODERATE_COMMENTS)%}               
+            <a class="nav-link" href="{{url_for('main.moderate')}}">管理评论</a>
+        {%endif%}
+
+          </li>
+
+			   {%if current_user.is_authenticated%}		
+         <li>	
+            <a href="{{ url_for('main.user',username=current_user.username) }}">用户资料</a>
+          </li>
+
+          <li>
+            <a href="{{url_for('auth.logout')}}">退出</a>
+          </li>
+
+          {% else %}
+          <li>
+              <a class="nav-link" href="{{ url_for('auth.login') }}">登陆
+              </a>
+          </li>
+          {% endif %}
+
+	    </ul>
+
+    </div>
+</nav>
+{%- endblock navbar %}
+
+{% block content -%}
+<main class="container" role="main">
+<div class="col-sm-8 blog-main">
+    <div class="blog-post">
+        <h2 class="blog-post-title">
+            {%block blogtitle%}
+            {%endblock%}
+        </h2>
+    {%for message in get_flashed_messages() %}
+    	<div class="alert alert-warning"> 
+        	<button type="button" class="close" data-dismiss="alert">&times;</button> 
+        {{ message }} 
+		</div> 
+  	{%endfor %} 
+
+  		<p class="lead blog-description">
+  		{%block blogdescription%}
+  		{%endblock blogdescription%}
+  		</p>
+  	</div>
+
+<!-- 博客正文 -->
+<main role="main" class="container">
+  <div class="row">
+      <div class="col-sm-8 blog-main">
+	{%block blogpost%}{%endblock%}
+  {%block pagination%}{%endblock pagination%}
+      </div>
+	</div>
+</main>
+
+{%- endblock content %}
+
+{%block footer%}
+{%endblock%}
+
+{% block scripts %}
+	<script src="{{url_for('static',filename='js/jquery-3.js')}}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+	<script src="{{url_for('static',filename='js/popper.js')}}"></script>
+
+	{{super()}}
+	{{ moment.include_jquery( local_js=url_for('static',filename='js/jquery-2.1.0.min.js')
+    ) }}
+
+    {{moment.include_moment(local_js=url_for('static',filename='js/moment-with-locales.min.js')
+    ) }}
+    {{moment.lang('zh-CN')}}
+{%- endblock scripts %}

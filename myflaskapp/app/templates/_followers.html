@@ -1,0 +1,18 @@
+<div class="blog-post">
+<ul class="post">
+{%for follower in follows%}
+	{%if not user.username==follower['user'].username%}
+ <!--关注者-->
+         <li>   <a href="{{ url_for('.user', username=follower['user'].username) }}"> 
+                {{ follower['user'].username}} 
+            </a> 
+
+ <!--关注时间-->
+    
+	{{ moment(follower['timestamp']).fromNow(refresh=True) }}   开始关注
+	</li>
+	<br>
+	{%endif%}
+{%endfor%}
+</ul>
+</div>

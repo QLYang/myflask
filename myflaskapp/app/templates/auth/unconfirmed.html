@@ -1,0 +1,9 @@
+{%extends "base.html" %} 
+
+{%block blogtitle%}您好,{{user.username}}{%endblock blogtitle%}
+{%block blogdescription%}点击下面的链接，将发送一封验证邮件到您的邮箱{%endblock blogdescription%}
+{%block posts%}
+<a href="{{url_for('auth.resend_confirmation')}}">若未收到邮件，点击再次发送</a>
+<br></br>
+<br></br>
+{%endblock%}

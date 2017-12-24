@@ -1,0 +1,18 @@
+{%extends "base.html" %}
+{%import "_macros.html" as macros %} 
+
+{%block blogtitle%}管理评论{%endblock%}
+
+{%block posts%}
+
+{%set moderate = True %} <!--模板变量决定是否渲染评论管理功能-->
+
+{%include '_comments.html' %} 
+
+{%endblock%}
+
+{%block pagination%}
+<nav class="blog-pagination">
+{{ macros.pagination_widget(pagination, '.moderate') }}       
+</nav>
+{%endblock pagination%}

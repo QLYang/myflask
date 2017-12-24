@@ -1,0 +1,18 @@
+{%extends "base.html" %}
+{%import "_macros_followers.html" as macros %}
+
+{%block blogtitle%}{{user.username}}{%endblock blogtitle%}
+
+{%block blogdescription%}{{title}}{%endblock blogdescription%}
+
+{%block posts%}
+{%include '_followers.html'%}
+{%endblock%}
+
+{%block pagination%}
+
+<nav class="blog-pagination">
+{{ macros.pagination_widget(pagination, endpoint,user) }}       
+</nav>
+
+{%endblock pagination%}

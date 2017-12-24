@@ -1,0 +1,22 @@
+{%extends "base.html"%}
+{%import "bootstrap/wtf.html" as wtf%}
+
+{%block blogtitle%}
+用户登录
+{%endblock blogtitle%}
+{%block blogdescription%}
+请输入账号、密码
+{%endblock blogdescription%}
+
+{%block posts%}
+<div class="blog-post"> 
+    {{ wtf.quick_form(form) }} 
+    <br>
+    <br>
+    <p> 
+    	<a href="{{ url_for('auth.register') }}"> 
+        	新用户注册
+    	</a> 
+	</p>
+</div> 
+{%endblock posts%}

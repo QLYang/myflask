@@ -1,0 +1,78 @@
+<!--用户资料页面-->
+{%extends "base.html" %}
+{%import "_macros.html" as macros %} 
+
+{%block blogtitle%}{{user.username}}{%endblock blogtitle%}
+{%block blogdescription%}
+{%if current_user.is_administrator%}
+邮箱 ：
+<a href="{{ user.email }}">{{ user.email }}</a>
+{%endif %} 
+{%endblock blogdescription%}
+
+{%block posts%}
+{%if user.name%}
+<p>{{user.name}}</p>
+{%endif%}
+
+{%if user.about_me %}<p>{{ user.about_me }}</p>{%endif %}
+
+{%if current_user.can(Permission.FOLLOW) and user != current_user%}
+	{%if  not current_user.is_following(user)%}
+	    <a href="{{ url_for('.follow', username=user.username) }}" 
+        class="btn btn-primary">关注</a> 
+	{%else%}
+	    <a href="{{ url_for('.unfollow', username=user.username) }}" 
+        class="btn btn-success">取消关注</a> 
+    {%endif%}
+{%endif%}
+<br>
+<br>
+<a class="btn btn-info" href="{{ url_for('.followers', username=user.username) }}"> 
+   	被 <span class="badge">{{ user.followers.count()-1 }}</span>人关注
+</a> 
+<br>
+<br>
+
+<a class="btn btn-info" href="{{ url_for('.followed_by', username=user.username) }}"> 
+    关注了 <span class="badge">{{ user.followed.count()-1 }}</span>人
+</a> 
+<br>
+{% if current_user.is_authenticated and user != current_user and user.is_following(current_user) %}
+<span class="label label-default">关注了你</span>
+{%endif%}
+<br>
+
+ <p>用户于 {{ moment(user.member_since).format('L') }} 创建</p>
+ <br>
+ <p> 最后登陆时间 : {{ moment(user.last_seen).fromNow(refresh=True) }}. 
+ </p> 
+
+
+{%if user==current_user%}
+<!--确定用户只能编辑自己的资料-->
+<a class="btn btn-warning" href="{{ url_for('main.edit_profile') }}">编辑资料</a> 
+<br>
+<br>
+{%endif%}
+
+{%if current_user.can(Permission.ADMINISTER)%}
+<a class="btn btn-danger" 
+ 	href="{{url_for('main.edit_profile_admin',id=user.id)}}">
+    编辑用户资料 [ 管理员 ]
+</a>
+<br>
+<br>
+{%endif%}
+
+<h3>发布文章 </h3>
+
+{%include '_posts.html'%}<!--用于渲染博客的局部模板-->
+
+{%endblock posts%}
+
+{%block pagination%}
+<nav class="blog-pagination">
+{{ macros.pagination_widget(pagination, '.index') }}       
+</nav>
+{%endblock pagination%}

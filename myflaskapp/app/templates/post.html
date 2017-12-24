@@ -1,0 +1,28 @@
+{%extends "base.html" %} 
+{%import "bootstrap/wtf.html" as wtf%}
+{%import "_macros_comments.html" as macros %} 
+
+{%block blogtitle%}博客文章{%endblock%}
+
+{%block posts%}
+
+{%include '_posts.html'%}<!--用于渲染博客的局部模板-->
+
+<div>
+	{%if current_user.can(Permission.COMMIT)%}
+	{{wtf.quick_form(form)}}
+	{%endif%}
+</div>
+
+{%include '_comments.html'%}
+
+{%endblock posts%}
+
+
+
+{%block pagination%}
+<nav class="blog-pagination">
+{{ macros.pagination_widget(pagination, '.post',posts) }}       
+</nav>
+{%endblock pagination%}
+

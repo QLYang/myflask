@@ -1,0 +1,43 @@
+<h3>评论</h3>
+{%for comment in comments%}
+<ul id="comments">
+    <ol>
+    <div class="post-date"><!--创建时间-->
+	{{ moment(comment.timestamp).fromNow(refresh=True) }}
+	</div>
+
+	<div class="post-author"> <!--文章作者-->
+            <a href="{{ url_for('.user', username=comment.author.username) }}"> 
+                {{ comment.author.username }} 
+            </a> 
+    </div>
+
+ 
+    <div class="post-content">
+            {%if comment.disabled %} 
+                <p></p><i>这条评论已被管理员屏蔽</i></p> 
+            {%endif %} 
+
+            {%if moderate or not comment.disabled %} <!--评论只有在管理模式或enable时显示-->
+                {%if comment.body_html %} 
+                    {{ comment.body_html | safe }} 
+                {%else %} 
+                    {{ comment.body }} 
+                {%endif %} 
+            {%endif %} 
+    </div> 
+   <!--只有从管理评论路由进入时才渲染-->
+            {%if moderate %} 
+            <br> 
+                {%if comment.disabled %} 
+                    <a class="btn btn-success btn-xs" href="{{url_for('.moderate_enable', id=comment.id, page=page) }}">显示</a> 
+                    
+                {%else %} 
+                    <a class="btn btn-danger btn-xs" href="{{url_for('.moderate_disable',
+                    id=comment.id, page=page) }}">屏蔽</a> 
+                {%endif %} 
+            {%endif %} 
+   
+</ol>
+</ul>
+{%endfor%}
